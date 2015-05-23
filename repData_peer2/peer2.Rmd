@@ -1,5 +1,5 @@
 ---
-title: "Risk analysis of the NOAA Storm Database"
+title: "Damage analysis based on the NOAA Storm Database"
 output: pdf_document
 ---
 
@@ -8,21 +8,21 @@ This is a analysis for the Coursera course "Reprodcible Research" (Peer Assessme
 # Synopsis
 
 The basic goal of this assignment is to explore the National Oceanic and Atmospheric Administration's (NOAA) Storm Database and answer some basic questions about severe weather events. The data analysis wants to address two main questions: (i) Across the United States, which types of events are most harmful with respect to population health? (ii) Across the United States, which types of events have the greatest economic consequences? 
-The data analysis demonstrates that Tornados cause most damage to humans and property, whereas hail is most detrimental for crops.
+The data analysis demonstrates that Tornados cause most damage to humans, whereas drought is most detrimental for crops and floods cause most damage at property.
 
 
 # Data processing
 
-The U.S. NOAA Storm database is downloaded from the public server and read into a table. The column "REMARKS" is removed from further analysis, since it contains free text information that blows up table size and makes displaying cumbersome. The resulting object is stored for faster access. 
+The U.S. NOAA Storm database is downloaded from the public server and read into a table. The column "REMARKS" is removed from further analysis, since it contains free text information that blows up table size and makes displaying cumbersome. The resulting object is stored for faster access. Guidelines how to prepare storm data are available here: https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf .
 
 ```{r}
-setwd("~/workspace/coursera")
+setwd("~/workspace/coursera/repData_peer2/")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(gplots))
 
 noaa_link= "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
-noaa_file= "repData_peer2/noaa_stormdata.csv.bz2"
-noaa_bak= "repData_peer2/noaa_table.RDS"
+noaa_file= "noaa_stormdata.csv.bz2"
+noaa_bak= "noaa_table.RDS"
 
 if(!file.exists(noaa_bak)){
     download.file(noaa_link, destfile=noaa_file)
@@ -35,27 +35,38 @@ if(!file.exists(noaa_bak)){
 
 ```
 
-In this analysis I want to focus on human, property and crop damage, therefore the table is restricted to the following columns: EVTYPE (weather events), FATALITIES (number of fatalities), INJURIES (number of injuries), PROPDMG (property damage), CROPDMG (crop damage).
-
+In this analysis I want to focus on human, property and crop damage, therefore the table is restricted to the following columns: EVTYPE (weather events), FATALITIES (number of fatalities), INJURIES (number of injuries), PROPDMG (property damage), CROPDMG (crop damage), PROPDMGEXP (property damage exponent), CROPDMGEXP (crop damage expponent).
+Alphabetical characters used to signify magnitude include “K” for thousands, “M” for millions, and “B” for billions (page 12, section 2.7 Damage from the Storm data preparation guidelines). I will compute new columns representing the absolute dollar amount of damage. The symbol h/H should correspond to 10^2. For numeric exponents base 10 is assumed. For -/+/? no exponent is assumed. The translation from "symbol" to "exp" was encoded by hand.
 
 ```{r}
-dmg_noaa_table= noaa_table[, c('EVTYPE', 'FATALITIES', 'INJURIES', 'PROPDMG', 'CROPDMG'), with=F]
-dmg_noaa_table
+dmg_noaa_table= noaa_table[, c('EVTYPE', 
+                               'FATALITIES', 'INJURIES', 
+                               'PROPDMG', 'CROPDMG', 'PROPDMGEXP', 'CROPDMGEXP'), with=F]
+# get all exponents
+dmg_exp= data.table(symbol=sort(with(dmg_noaa_table, 
+                                     union( unique(CROPDMGEXP), unique(PROPDMGEXP) )
+                                     )),
+                   exp=c(rep(0,4), 0:8, 9, 2,2, 3,3,6,6)
+                   )
+dmg_exp
+
+# compute absolute dollar damage
+dmg_noaa_table[, c('prop_dollar', 'crop_dollar'):= 
+                   list(PROPDMG * 10 ^ dmg_exp[match(PROPDMGEXP, symbol), exp],
+                        CROPDMG * 10 ^ dmg_exp[match(CROPDMGEXP, symbol), exp]
+                        )
+            ]
+
 ```
 
-Generate basic statistics about the data. Which events are documented? How frequent are they? What is distribution of all damages, i.e. uniform or normally distributed?
+
+# Results
 
 ```{r}
 num_evtypes= length(unique(dmg_noaa_table$EVTYPE))
 ```
 
-The table contains `r num_evtypes` different weather events. 
-
-
-
-# Results
-
-What are the ten most frequent events?
+The table contains `r num_evtypes` different weather events. What are the ten most frequent events?
 ```{r}
 evcounts= sort(table(dmg_noaa_table$EVTYPE), decreasing = T)
 par(mar=c(4,11,1,1))
@@ -78,25 +89,26 @@ barplot2( top_inj[['sum_inj']], names.arg = top_inj[['EVTYPE']],
           horiz=T, las=1, xlab='Injuries')
 
 ```
-During Tornados most people dieand get injured compared to the other weather events in the database. 
+During Tornados most people die and get injured compared to the other weather events in the database. 
+
 
 ## Across the United States, which types of events have the greatest economic consequences? 
 ```{r}
-dmg_noaa_table[,c('sum_prop', 'sum_crop'):=list(sum(PROPDMG), sum(CROPDMG)), by=EVTYPE]
+dmg_noaa_table[,c('sum_prop', 'sum_crop'):=list(sum(prop_dollar), sum(crop_dollar)), by=EVTYPE]
 econ_dmg= unique(dmg_noaa_table[,list(EVTYPE, sum_prop, sum_crop)])
 
 top_prop= econ_dmg[order(-sum_prop)][1:10]
 par(mar=c(4,11,1,1))
-barplot2( top_prop[['sum_prop']]/1e6, names.arg = top_prop[['EVTYPE']], 
-          horiz=T, las=1, xlab='Property damage [Mio $]')
+barplot2( top_prop[['sum_prop']]/1e9, names.arg = top_prop[['EVTYPE']], 
+          horiz=T, las=1, xlab='Property damage [10^9 $]')
 
 top_crop= econ_dmg[order(-sum_crop)][1:10]
 par(mar=c(4,11,1,1))
-barplot2( top_crop[['sum_crop']]/1e6, names.arg = top_crop[['EVTYPE']], 
-          horiz=T, las=1, xlab='Crop damage [Mio $]')
+barplot2( top_crop[['sum_crop']]/1e9, names.arg = top_crop[['EVTYPE']], 
+          horiz=T, las=1, xlab='Crop damage [10^9 $]')
 ```
-During Tornados the highest property damage is caused compared to the other weather events in the database.
-During Hail the highest crop damage is caused  compared to the other weather events in the database.
+During floods the highest property damage is caused compared to the other weather events in the database.
+During droughts the highest crop damage is caused  compared to the other weather events in the database.
 
 
 # Discussion
