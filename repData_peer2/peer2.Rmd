@@ -3,20 +3,19 @@ title: "Risk analysis of the NOAA Storm Database"
 output: pdf_document
 ---
 
-This is a test analysis for the Coursera course "Reprodcible Research" (Peer Assessment 2).
+This is a analysis for the Coursera course "Reprodcible Research" (Peer Assessment 2).
 
 # Synopsis
 
-The basic goal of this assignment is to explore the NOAA Storm Database and answer some basic questions about severe weather events. The data analysis wants to address two main questions: (i) Across the United States, which types of events are most harmful with respect to population health? (ii) Across the United States, which types of events have the greatest economic consequences? 
-
-However, this report does not want to make any specific recommendations.
+The basic goal of this assignment is to explore the National Oceanic and Atmospheric Administration's (NOAA) Storm Database and answer some basic questions about severe weather events. The data analysis wants to address two main questions: (i) Across the United States, which types of events are most harmful with respect to population health? (ii) Across the United States, which types of events have the greatest economic consequences? 
+The data analysis demonstrates that Tornados cause most damage to humans and property, whereas hail is most detrimental for crops.
 
 
 # Data processing
 
-The U.S. National Oceanic and Atmospheric Administration's (NOAA) Storm database is downloaded from the public server and read into a table. The column "REMARKS" is removed from further analysis, since it contains free text information that blows up table size and makes displaying cumbersome. The resulting object is stored for faster access. 
+The U.S. NOAA Storm database is downloaded from the public server and read into a table. The column "REMARKS" is removed from further analysis, since it contains free text information that blows up table size and makes displaying cumbersome. The resulting object is stored for faster access. 
 
-```{r, cache=TRUE}
+```{r}
 setwd("~/workspace/coursera")
 suppressPackageStartupMessages(library(data.table))
 suppressPackageStartupMessages(library(gplots))
@@ -40,24 +39,68 @@ In this analysis I want to focus on human, property and crop damage, therefore t
 
 
 ```{r}
-dmg_noaa_table= noaa_table[, list(EVTYPE, FATALITIES, INJURIES, PROPDMG, CROPDMG)]
+dmg_noaa_table= noaa_table[, c('EVTYPE', 'FATALITIES', 'INJURIES', 'PROPDMG', 'CROPDMG'), with=F]
 dmg_noaa_table
 ```
 
 Generate basic statistics about the data. Which events are documented? How frequent are they? What is distribution of all damages, i.e. uniform or normally distributed?
 
 ```{r}
-num_evtypes=unique(dmg_noaa_table$EVTYPE)
-evcounts= sort(table(dmg_noaa_table$EVTYPE), decreasing = T)
+num_evtypes= length(unique(dmg_noaa_table$EVTYPE))
 ```
 
-The table contains `numevtypes` different weather events. 
+The table contains `r num_evtypes` different weather events. 
+
+
 
 # Results
 
 What are the ten most frequent events?
 ```{r}
-par(mar=c(4,10,1,1))
+evcounts= sort(table(dmg_noaa_table$EVTYPE), decreasing = T)
+par(mar=c(4,11,1,1))
 barplot2(evcounts[1:10], horiz=T, las=1)
 ```
+
+## Across the United States, which types of events are most harmful with respect to population health? 
+```{r}
+dmg_noaa_table[,c('sum_fat', 'sum_inj'):=list(sum(FATALITIES), sum(INJURIES)), by=EVTYPE]
+human_dmg= unique(dmg_noaa_table[,list(EVTYPE, sum_fat, sum_inj)])
+
+top_fat= human_dmg[order(-sum_fat)][1:10]
+par(mar=c(4,11,1,1))
+barplot2( top_fat[['sum_fat']], names.arg = top_fat[['EVTYPE']], 
+          horiz=T, las=1, xlab='Fatalities')
+
+top_inj= human_dmg[order(-sum_inj)][1:10]
+par(mar=c(4,11,1,1))
+barplot2( top_inj[['sum_inj']], names.arg = top_inj[['EVTYPE']], 
+          horiz=T, las=1, xlab='Injuries')
+
+```
+During Tornados most people dieand get injured compared to the other weather events in the database. 
+
+## Across the United States, which types of events have the greatest economic consequences? 
+```{r}
+dmg_noaa_table[,c('sum_prop', 'sum_crop'):=list(sum(PROPDMG), sum(CROPDMG)), by=EVTYPE]
+econ_dmg= unique(dmg_noaa_table[,list(EVTYPE, sum_prop, sum_crop)])
+
+top_prop= econ_dmg[order(-sum_prop)][1:10]
+par(mar=c(4,11,1,1))
+barplot2( top_prop[['sum_prop']]/1e6, names.arg = top_prop[['EVTYPE']], 
+          horiz=T, las=1, xlab='Property damage [Mio $]')
+
+top_crop= econ_dmg[order(-sum_crop)][1:10]
+par(mar=c(4,11,1,1))
+barplot2( top_crop[['sum_crop']]/1e6, names.arg = top_crop[['EVTYPE']], 
+          horiz=T, las=1, xlab='Crop damage [Mio $]')
+```
+During Tornados the highest property damage is caused compared to the other weather events in the database.
+During Hail the highest crop damage is caused  compared to the other weather events in the database.
+
+
+# Discussion
+
+To get more fine grained statistics you could normalize the damages for each event by the frequency of the event.
+This could result in events to prepare for with the highest impact on damage reduction.
 
