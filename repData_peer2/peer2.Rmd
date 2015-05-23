@@ -3,18 +3,61 @@ title: "Risk analysis of the NOAA Storm Database"
 output: pdf_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This is a test analysis for the Coursera course "Reprodcible Research" (Peer Assessment 2).
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Synopsis
+
+The basic goal of this assignment is to explore the NOAA Storm Database and answer some basic questions about severe weather events. The data analysis wants to address two main questions: (i) Across the United States, which types of events are most harmful with respect to population health? (ii) Across the United States, which types of events have the greatest economic consequences? 
+
+However, this report does not want to make any specific recommendations.
+
+
+# Data processing
+
+The U.S. National Oceanic and Atmospheric Administration's (NOAA) Storm database is downloaded from the public server and read into a table. The column "REMARKS" is removed from further analysis, since it contains free text information that blows up table size and makes displaying cumbersome. The resulting object is stored for faster access. 
+
+```{r, cache=TRUE}
+setwd("~/workspace/coursera")
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(gplots))
+
+noaa_link= "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+noaa_file= "repData_peer2/noaa_stormdata.csv.bz2"
+noaa_bak= "repData_peer2/noaa_table.RDS"
+
+if(!file.exists(noaa_bak)){
+    download.file(noaa_link, destfile=noaa_file)
+    colidx_remarks= 36
+    noaa_table= as.data.table(read.csv(noaa_file))[,setdiff(1:37,colidx_remarks), with=F]
+    saveRDS(noaa_table, file=noaa_bak)
+}else{
+    noaa_table= readRDS(noaa_bak)
+}
+
+```
+
+In this analysis I want to focus on human, property and crop damage, therefore the table is restricted to the following columns: EVTYPE (weather events), FATALITIES (number of fatalities), INJURIES (number of injuries), PROPDMG (property damage), CROPDMG (crop damage).
+
 
 ```{r}
-summary(cars)
+dmg_noaa_table= noaa_table[, list(EVTYPE, FATALITIES, INJURIES, PROPDMG, CROPDMG)]
+dmg_noaa_table
 ```
 
-You can also embed plots, for example:
+Generate basic statistics about the data. Which events are documented? How frequent are they? What is distribution of all damages, i.e. uniform or normally distributed?
 
-```{r, echo=FALSE}
-plot(cars)
+```{r}
+num_evtypes=unique(dmg_noaa_table$EVTYPE)
+evcounts= sort(table(dmg_noaa_table$EVTYPE), decreasing = T)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The table contains `numevtypes` different weather events. 
+
+# Results
+
+What are the ten most frequent events?
+```{r}
+par(mar=c(4,10,1,1))
+barplot2(evcounts[1:10], horiz=T, las=1)
+```
+
