@@ -1,3 +1,5 @@
 # The following patterns will be excluded
 .Rproj.user
 .Rhistory
+.DS_Store
+.Rdata
