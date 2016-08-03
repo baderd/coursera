@@ -5,17 +5,18 @@ library(plotly)
 library(data.table)
 library(LSD)
 
-dt = fread( file.path('/Users/baderd/Downloads/',
-      'IHME_GBD_2010_MORTALITY_AGE_SPECIFIC_BY_COUNTRY_1970_2010.csv')
-      )
+# data 
+origin= 'https://public.tableau.com/s/sites/default/files/media/IHME_GBD_2010_MORTALITY_AGE_SPECIFIC_BY_COUNTRY_1970_2010.csv' 
+dt = fread(origin)
+# clean up
 colnames(dt) = gsub(' ','_',colnames(dt))
 colnames(dt) = gsub(',','', colnames(dt))
 dt[, Death_Rate_Per_100000:= gsub(',','', Death_Rate_Per_100000)]
 dt[, Death_Rate_Per_100000:= as.numeric(Death_Rate_Per_100000)]
 
-colnames(dt) 
-unique(dt$Country_Name)
-unique(dt$Age_Group)
+# colnames(dt) 
+# unique(dt$Country_Name)
+# unique(dt$Age_Group)
 
 some_countries= c('France', 'China', 'Afghanistan', 'United States', 'Brazil', 'Sudan', 'Australia')
 below_1year = c('0-6 days','7-27 days','28-364 days')
