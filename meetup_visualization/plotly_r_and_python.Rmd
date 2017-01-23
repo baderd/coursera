@@ -1,0 +1,29 @@
+---
+title: "R Notebook"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+plotly with R
+
+```{r, message=F, warning=F}
+library(plotly)
+x = plot_ly(economics, x = ~pop, type='histogram')
+x
+```
+
+
+```{setup, include=FALSE}
+knitr::opts_chunk$set(engine.path = list(python = '/anaconda/bin/python'))
+```
+
+Now python plotly
+
+```{python, engine.path="/Users/baderd/anaconda/bin/python", results='asis'}
+from plotly.offline import plot
+from plotly.graph_objs import Scatter
+
+my_plot_div = plot([Scatter(x=[1, 2, 3], y=[3, 1, 6])], output_type='div')
+print(my_plot_div)
+```
