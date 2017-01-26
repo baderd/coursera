@@ -1,0 +1,105 @@
+---
+title: "Interactive Visualization across boundaries <br> Plotly in R and Python"
+author: Susann Vorberg & Daniel Bader
+output:
+  html_document: default
+  html_notebook: default
+---
+
+- JavaScript graphing library plotly.js is build on top of D3
+- went open-source in Nov 2015
+- graphs are specified declaratively in JSON format
+
+
+```
+{
+    "data": [
+        {
+            "x":[1,2,3],
+            "y":[2,3,4]
+        }
+    ],
+    "layout" : {
+        "title":"Plotly Plot"
+    }
+}
+```
+
+
+- API libraries for Python, R, Julia 
+
+
+```{r, message=F, warning=F}
+library(plotly)
+x = plot_ly(economics, x = ~pop, type='histogram')
+x
+```
+
+```{r, message=F, warning=F}
+x = plot_ly(economics, x = ~pop, type='histogram')
+x
+```
+
+
+```{setup, include=FALSE}
+knitr::opts_chunk$set(engine.path = list(python = '/Users/baderd/anaconda/bin/python'))
+```
+
+# Python API
+
+Install plotly library with pip...
+
+```
+pip install plotly 
+```
+... or with anaconda.
+
+```
+conda install plotly
+```
+
+
+## Simple example
+
+```{python, engine.path="/Users/baderd/anaconda/bin/python", results='asis' }
+import plotly
+import plotly.graph_objs as go
+
+my_plot_div = plotly.offline.plot({
+    "data": [go.Scatter(
+                x=[1, 2, 3, 4], 
+                y=[4, 3, 2, 1]
+            )],
+    "layout": go.Layout(title="hello world")
+},  output_type='div')
+
+print(my_plot_div)
+```
+
+```{python, results='asis' }
+import plotly
+import plotly.graph_objs as go
+
+my_plot_div = plotly.offline.plot({
+    "data": [go.Scatter(
+                x=[1, 2, 3, 4], 
+                y=[4, 3, 2, 1]
+            )],
+    "layout": go.Layout(title="hello world")
+},  output_type='div')
+
+print(my_plot_div)
+```
+
+## Plotly in Jupyter Notebook
+
+```{python, engine.path="/Users/baderd/anaconda/bin/python", eval=F}
+plotly.offline.init_notebook_mode()
+
+plotly.offline.iplot({
+    "data": [go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])]
+})
+```
+
+
+
