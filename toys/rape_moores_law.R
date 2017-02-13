@@ -1,0 +1,1 @@
+# rape moore's law
