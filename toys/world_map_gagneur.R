@@ -8,10 +8,13 @@ dt = people[,.(number_people=.N),by=country]
 dt
 
 p <- plot_ly(dt, type='choropleth', locationmode='country names', 
-             locations=~country, z=~number_people, colors=colorRamp(c("skyblue", "blue"))
+             locations=~country, z=~number_people, colors=colorRamp(c( "lightblue", "blue"))
 ) %>% layout(
     title='Gagneur lab since 2012',
-    geo=list(scope='world', projection=list(type='natural earth'))
+    geo=list(scope='world', 
+             projection=list(type='orthographic'), #3d: orthographic
+             landcolor='beige', showland=T 
+    )
 )
 p
 
