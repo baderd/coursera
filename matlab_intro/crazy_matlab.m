@@ -37,6 +37,16 @@ if 0.25
 end
 
 
+% logical operators differ in syntax betw scalars and arrays
+[12 4234 435] & [456  54 0]
+1 && 1
+
+% inside functions params
+% nargin and nargout
+
+% return matrix as vector
+randmat = rand(2,3);
+randmat(:);
 
 
 
