@@ -26,6 +26,16 @@ rr - rand;
 % basic plot and legend
 plot(1:2, rand(2));
 legend('a','b');
+close()
+
+% every non-zero number is TRUE
+if -1
+    fprintf("this was true\n")
+end
+if 0.25
+    fprintf("this was true\n")
+end
+
 
 
 
