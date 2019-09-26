@@ -1,0 +1,37 @@
+---
+title: "Week2 Leaflet"
+author: "Daniel Bader"
+output: html_document
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+---
+
+Coursera  - Developing data products.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Webpage with Map
+
+Map is generated with leaflet javascript library.
+
+
+Using the `ozone` data from the maps pacakge. From the help page:
+    ozone contains the median of daily maxima ozone concentration in 
+    41 US cities for June 1974 through August 1974. Concentrations are in parts per billion (ppb)
+
+
+```{r}
+library(leaflet)
+library(maps)
+
+hist(ozone$median)
+summary(ozone$median)
+
+leaflet(ozone) %>% 
+    addTiles() %>% 
+    addCircleMarkers(
+        lng = ~x, lat = ~y, radius = sqrt(ozone$median) * 2, weight = 1
+        )
+```
+
