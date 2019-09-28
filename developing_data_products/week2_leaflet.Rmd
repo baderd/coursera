@@ -28,10 +28,12 @@ library(maps)
 hist(ozone$median)
 summary(ozone$median)
 
+
+
 leaflet(ozone) %>% 
     addTiles() %>% 
     addCircleMarkers(
-        lng = ~x, lat = ~y, radius = sqrt(ozone$median) * 2, weight = 1
+        lng = ~x, lat = ~y, radius = ~sqrt(median) * 2, weight = 1
         )
 ```
 

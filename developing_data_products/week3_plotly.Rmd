@@ -1,0 +1,37 @@
+---
+title: "Coursera: Developing Data Products"
+author: "Daniel Bader"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Week3 assignemnt
+
+- Rmd presentatation
+- recent date
+- plotly graph
+
+## Plotly graph 
+
+- 1970es ozone emission in US east coast cities.
+- Median of daily maxima ozone concentration in parts per billion
+
+```{r, message = F, warning = F}
+library(maps)
+library(plotly)
+
+plot_ly(
+    data = ozone, x = ~x, y = ~y, 
+    size = ~median, 
+    hovertext = ~paste("PPB:", median)
+) %>% 
+    add_markers(name = "ozone", hoverinfo = "all") %>%
+    layout(
+        xaxis = list(title = "longitude"),
+        yaxis = list(title = "latitude")
+    )
+```

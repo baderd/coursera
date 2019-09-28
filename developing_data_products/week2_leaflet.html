@@ -12,7 +12,7 @@
 
 <meta name="author" content="Daniel Bader" />
 
-<meta name="date" content="2019-09-26" />
+<meta name="date" content="2019-09-28" />
 
 <title>Week2 Leaflet</title>
 
@@ -4236,7 +4236,7 @@ summary {
 
 <h1 class="title toc-ignore">Week2 Leaflet</h1>
 <h4 class="author">Daniel Bader</h4>
-<h4 class="date">2019-09-26</h4>
+<h4 class="date">2019-09-28</h4>
 
 </div>
 
@@ -4257,10 +4257,10 @@ hist(ozone$median)</code></pre>
 <pre class="r"><code>leaflet(ozone) %&gt;% 
     addTiles() %&gt;% 
     addCircleMarkers(
-        lng = ~x, lat = ~y, radius = sqrt(ozone$median) * 2, weight = 1
+        lng = ~x, lat = ~y, radius = ~sqrt(median) * 2, weight = 1
         )</code></pre>
-<div id="htmlwidget-5f85c5182c18f5c9e5a3" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5f85c5182c18f5c9e5a3">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[40.2217,40.5597,40.7832,40.6628,40.6514,40.7001,40.7087,40.9379,40.7373,40.7373,40.9665,41.0811,41.1384,41.0639,41.19,41.3905,41.316,41.5624,41.677,41.3905,41.5624,41.6712,41.3619,41.7687,41.8603,41.9004,42.1124,42.2499,42.588,41.7114,42.6453,42.2499,42.3244,42.376,42.3817,42.4218,41.9176,42.4505,42.6281,42.8,43.3214],[-74.0262,-74.5992,-74.7138,-74.1408,-74.2554,-74.1694,-73.9116,-73.8543,-73.5678,-73.1668,-73.7397,-73.6251,-73.5678,-73.5105,-73.1668,-73.4533,-72.9376,-73.0522,-73.2241,-72.4219,-72.6511,-72.7657,-72.0782,-72.7084,-72.6511,-72.0782,-72.5938,-71.7917,-71.7917,-71.1041,-71.3333,-71.0468,-71.1041,-71.1041,-71.2187,-71.0468,-74.0262,-73.2241,-73.7397,-73.9116,-73.6251],[15.3622914957372,15.2315462117278,18.9736659610103,17.8885438199983,14.142135623731,13.7113092008021,18,14.9666295470958,14.8323969741913,16.9705627484771,15.7480157480236,20,19.6977156035922,19.0787840283389,17.8885438199983,18,17.4355957741627,17.3205080756888,18.4390889145858,19.3907194296653,17.8885438199983,18.1107702762748,17.2046505340853,16.4924225024706,15.4919333848297,18.4390889145858,11.6619037896906,16.2480768092719,16.1245154965971,17.0880074906351,15.8745078663875,15.7480157480236,12,14.6969384566991,12.9614813968157,14.422205101856,16,16.1245154965971,15.4919333848297,14.9666295470958,16],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":1,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.2217,43.3214],"lng":[-74.7138,-71.0468]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bf6905ad9fbc61925481" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bf6905ad9fbc61925481">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[40.2217,40.5597,40.7832,40.6628,40.6514,40.7001,40.7087,40.9379,40.7373,40.7373,40.9665,41.0811,41.1384,41.0639,41.19,41.3905,41.316,41.5624,41.677,41.3905,41.5624,41.6712,41.3619,41.7687,41.8603,41.9004,42.1124,42.2499,42.588,41.7114,42.6453,42.2499,42.3244,42.376,42.3817,42.4218,41.9176,42.4505,42.6281,42.8,43.3214],[-74.0262,-74.5992,-74.7138,-74.1408,-74.2554,-74.1694,-73.9116,-73.8543,-73.5678,-73.1668,-73.7397,-73.6251,-73.5678,-73.5105,-73.1668,-73.4533,-72.9376,-73.0522,-73.2241,-72.4219,-72.6511,-72.7657,-72.0782,-72.7084,-72.6511,-72.0782,-72.5938,-71.7917,-71.7917,-71.1041,-71.3333,-71.0468,-71.1041,-71.1041,-71.2187,-71.0468,-74.0262,-73.2241,-73.7397,-73.9116,-73.6251],[15.3622914957372,15.2315462117278,18.9736659610103,17.8885438199983,14.142135623731,13.7113092008021,18,14.9666295470958,14.8323969741913,16.9705627484771,15.7480157480236,20,19.6977156035922,19.0787840283389,17.8885438199983,18,17.4355957741627,17.3205080756888,18.4390889145858,19.3907194296653,17.8885438199983,18.1107702762748,17.2046505340853,16.4924225024706,15.4919333848297,18.4390889145858,11.6619037896906,16.2480768092719,16.1245154965971,17.0880074906351,15.8745078663875,15.7480157480236,12,14.6969384566991,12.9614813968157,14.422205101856,16,16.1245154965971,15.4919333848297,14.9666295470958,16],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":1,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.2217,43.3214],"lng":[-74.7138,-71.0468]}},"evals":[],"jsHooks":[]}</script>
 </div>
 
 
