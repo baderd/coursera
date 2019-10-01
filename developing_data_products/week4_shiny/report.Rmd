@@ -1,0 +1,25 @@
+---
+title: "Shiny-selected mtcars"
+author: "Daniel Bader"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: html_document
+params:
+    hot: NA
+    ptly: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Plot
+
+```{r}
+params$ptly
+```
+
+## Handsontable
+
+```{r}
+params$hot
+```

@@ -13,21 +13,23 @@ library(shiny)
 shinyUI(fluidPage(
 
     # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Dynamic plot and search on mtcars table"),
 
-    # Sidebar with a slider input for number of bins
+    # Sidebar with a filter inputs
     sidebarLayout(
         sidebarPanel(
+            downloadButton("report", "Generate report"),
             textInput(
                 inputId = "car_search", 
                 label = "Search for cars by name", 
-                value = ".*"
+                value = ""
             )
         ),
 
         # Show the mtcars table
         mainPanel(
             plotlyOutput("hp_vs_qsec"),
+            # tableOutput("simple_tab"),
             rHandsontableOutput("hot")
         )
     )
