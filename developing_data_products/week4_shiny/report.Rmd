@@ -9,7 +9,9 @@ params:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-dfcars <- read.csv(params$file_table, row.names = F)
+dfcars <- read.csv(params$file_table)
+library(plotly)
+library(rhandsontable)
 ```
 
 ## Plot

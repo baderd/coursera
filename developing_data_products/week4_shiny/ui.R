@@ -1,13 +1,9 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# R shiny app UI
+# author: Daniel Bader
 
 library(shiny)
+library(plotly)
+library(rhandsontable)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -46,11 +42,14 @@ shinyUI(fluidPage(
               \"The data was extracted from the 1974 Motor Trend US magazine, 
               and comprises fuel consumption and 10 aspects of automobile design 
               and performance for 32 automobiles (1973–74 models).\"
+              You can get more details via <code>?mtcars</code>.
               "),
             HTML("<br><br>"),
+            h2("Interactive plotly graph"),
             plotlyOutput("hp_vs_qsec"),
-            # tableOutput("simple_tab"),
-            rHandsontableOutput("hot")
+            h2("Editable R-handsontable"),
+            rHandsontableOutput("hot"),
+            HTML("<br>")
         )
     )
 ))

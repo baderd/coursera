@@ -1,11 +1,5 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# R shiny app server
+# author: Daniel Bader
 
 library(shiny)
 library(rhandsontable)
@@ -55,14 +49,14 @@ shinyServer(function(input, output) {
         content = function(file) {
             # save hot to tmp file
             tmpfile <- tempfile(fileext = ".csv")
-            write.csv(x = hot_to_r(input$hot), file = tmpfile)
+            write.csv(x = hot_to_r(input$hot), file = tmpfile, row.names = F)
             
             # Set up parameters to pass to Rmd document
             params <- list(file_table = tmpfile)
             
             # Knit the document, passing in the `params` list, and eval it in a
-            # child of the global environment (this isolates the code in the document
-            # from the code in this app).
+            # child of the global environment 
+            # (this isolates the code in the document from the code in this app).
             rmarkdown::render(
                 "report.Rmd", 
                 output_file = file,
