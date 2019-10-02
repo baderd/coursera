@@ -5,8 +5,8 @@ account: baderd
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1274295
-bundleId: 2461937
+bundleId: 2461957
 url: https://baderd.shinyapps.io/Dynamic_mtcars/
-when: 1570015560.09521
+when: 1570015926.63143
 asMultiple: FALSE
 asStatic: FALSE
