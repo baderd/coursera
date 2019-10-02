@@ -4,22 +4,25 @@ author: "Daniel Bader"
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output: html_document
 params:
-    hot: NA
-    ptly: NA
+    file_table: NA
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+dfcars <- read.csv(params$file_table, row.names = F)
 ```
 
 ## Plot
 
 ```{r}
-params$ptly
+plot_ly(data = dfcars, x = ~hp, y = ~qsec, hovertext = ~car_name) %>%
+    add_markers()
 ```
 
 ## Handsontable
 
 ```{r}
-params$hot
+rhandsontable(data = dfcars, rowHeaders = NULL, width = 1000) %>%
+    hot_table(highlightRow = TRUE) %>%
+    hot_cols(columnSorting = TRUE)
 ```
