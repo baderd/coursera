@@ -38,13 +38,23 @@ plot_ly(data = mtcars, x = ~hp, y = ~qsec, hovertext = rownames(mtcars)) %>%
 
 ## Editable table
 
-```{r}
-rhandsontable(data = mtcars, search = T) %>%
+Using <code>rhandsontable</code> package to allow editing of cells.
+
+```{r, size = "tiny"}
+rhandsontable(data = mtcars) %>%
     hot_table(highlightRow = TRUE, rowHeaderWidth = 200) %>%
-    hot_cols(columnSorting = TRUE)
+    hot_cols(columnSorting = TRUE) %>%
+    hot_rows(rowHeights = 50)
 ```
 
 
 ## Not enough?
 
+Visit my shiny app bringing it all together: <br>
 https://baderd.shinyapps.io/Dynamic_mtcars/ 
+<br><br>
+
+*Still not enough?*
+
+Check out the [source code](https://github.com/baderd/coursera/tree/master/developing_data_products/week4_shiny) 
+to apply it to your data ;-)
