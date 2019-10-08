@@ -9,7 +9,7 @@ library(rhandsontable)
 shinyUI(fluidPage(
 
     # Application title
-    titlePanel("Dynamic plot and search on mtcars table"),
+    titlePanel("Dynamic plot and search on editable mtcars table"),
 
     # Sidebar with a filter inputs
     sidebarLayout(
