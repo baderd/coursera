@@ -18,11 +18,6 @@ shinyServer(function(input, output) {
     )
     rownames(df_cars_raw) <- NULL
     
-    # subset by search term
-    dfcars <- reactive({
-        subset(df_cars_raw, grepl(input$car_search, car_name, ignore.case = T))
-    })
-    
     # display editable table
     tmp_hot <- reactive({
         rhandsontable(data = dfcars(), rowHeaders = NULL) %>%
@@ -30,6 +25,12 @@ shinyServer(function(input, output) {
             hot_cols(columnSorting = TRUE)
     })
     output$hot <- renderRHandsontable(tmp_hot())
+    
+    
+    # subset by search term
+    dfcars <- reactive({
+        subset(df_cars_raw, grepl(input$car_search, car_name, ignore.case = T))
+    })
     
     
     # plot horsepower vs quarter mile seconds
@@ -42,6 +43,10 @@ shinyServer(function(input, output) {
             add_markers()
     })
     
+    output$avg_qsec <- renderText({
+        shiny::req(input$hot)
+        signif(mean(hot_to_r(input$hot)$qsec), 2)
+    })
     
     # generate downloadable report with current modified table
     output$report <- downloadHandler(

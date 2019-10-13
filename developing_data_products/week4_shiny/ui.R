@@ -34,7 +34,7 @@ shinyUI(fluidPage(
             HTML("This app allows you to subset the mtcars table by car name and 
               plot the corresponding horse power (hp) versus the time in seconds 
               the car needs for a quarter mile (qsec). Furthermore, the table 
-              displayed is editable (like excel), so you modify your favorite 
+              displayed is editable (by double click), so you modify your favorite 
               car to be the fastest and most powerful. The plot will change 
               automatically.  
               <br><br>
@@ -49,6 +49,8 @@ shinyUI(fluidPage(
             plotlyOutput("hp_vs_qsec"),
             h2("Editable R-handsontable"),
             rHandsontableOutput("hot"),
+            HTML("<br>The average quarter mile speed is:"),
+            textOutput("avg_qsec"),
             HTML("<br>")
         )
     )
