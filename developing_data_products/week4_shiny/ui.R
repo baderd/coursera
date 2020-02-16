@@ -45,12 +45,13 @@ shinyUI(fluidPage(
               You can get more details via <code>?mtcars</code>.
               "),
             HTML("<br><br>"),
-            h2("Interactive plotly graph"),
-            plotlyOutput("hp_vs_qsec"),
+            textOutput("wd"),
             h2("Editable R-handsontable"),
             rHandsontableOutput("hot"),
             HTML("<br>The average quarter mile speed is:"),
             textOutput("avg_qsec"),
+            h2("Interactive plotly graph"),
+            plotlyOutput("hp_vs_qsec"),
             HTML("<br>")
         )
     )

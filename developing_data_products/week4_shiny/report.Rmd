@@ -14,6 +14,30 @@ library(plotly)
 library(rhandsontable)
 ```
 
+## Plain image
+
+![](/home/daniel/workspace/coursera/developing_data_products/week4_shiny/car_images/Mazda_RX4_wiki.jpg)
+
+
+## Handsontable
+
+```{r, fig.width=10}
+rhandsontable(
+    data = dfcars,
+    rowHeaders = NULL,
+    allowedTags = "<img>"
+) %>%
+    hot_table(
+        highlightRow = TRUE,
+        height = 300,
+        stretchH = TRUE
+    ) %>%
+    hot_cols(columnSorting = TRUE, colWidths = 60) %>%
+    hot_rows(rowHeights = 60) %>%
+    hot_col("car_img", renderer = htmlwidgets::JS("safeHtmlRenderer"))
+```
+
+
 ## Plot
 
 ```{r}
@@ -21,10 +45,4 @@ plot_ly(data = dfcars, x = ~hp, y = ~qsec, hovertext = ~car_name) %>%
     add_markers()
 ```
 
-## Handsontable
 
-```{r}
-rhandsontable(data = dfcars, rowHeaders = NULL, width = 1000) %>%
-    hot_table(highlightRow = TRUE) %>%
-    hot_cols(columnSorting = TRUE)
-```
